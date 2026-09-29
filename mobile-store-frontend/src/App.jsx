@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import HomePage from '@/pages/Home/HomePage'
+import ProductsPage from '@/pages/Products/ProductsPage'
 import Footer from '@/components/layout/Footer'
 import Header from '@/components/layout/Header'
 import { routes } from '@/routes'
@@ -11,6 +12,7 @@ function App() {
       <main className="flex-1">
         <Routes>
           <Route path={routes.home} element={<HomePage />} />
+          <Route path={routes.products} element={<ProductsPage />} />
           <Route path="*" element={<Navigate to={routes.home} replace />} />
         </Routes>
       </main>

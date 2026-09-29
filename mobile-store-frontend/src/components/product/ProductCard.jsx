@@ -1,0 +1,10 @@
+import { Heart, ShoppingCart, Star } from 'lucide-react'
+import { Link } from 'react-router-dom'
+
+const currency = (value) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 }).format(value)
+
+function ProductCard({ product }) {
+  return <article className="group relative flex flex-col overflow-hidden rounded-xl border border-slate-100 bg-white p-3 shadow-sm transition hover:-translate-y-1 hover:shadow-lg sm:p-4"><span className="absolute left-3 top-3 z-10 rounded-md bg-primary-600 px-2 py-1 text-[10px] font-bold text-white">Giảm {product.discountPercent}%</span><button type="button" aria-label="Yêu thích" className="absolute right-3 top-3 z-10 grid size-8 place-items-center rounded-full bg-white text-slate-400 shadow-sm hover:text-primary-600"><Heart size={17} /></button><Link to={`/products/${product.id}`} className="aspect-square overflow-hidden rounded-lg bg-slate-50"><img src={product.thumbnail} alt={product.name} className="size-full object-cover transition duration-500 group-hover:scale-105" /></Link><div className="flex flex-1 flex-col pt-3"><p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">{product.brand}</p><Link to={`/products/${product.id}`} className="mt-1 min-h-10 text-sm font-semibold leading-5 text-slate-800 hover:text-primary-600">{product.name}</Link><p className="mt-3 text-lg font-bold text-primary-600">{currency(product.discountPrice)}</p><p className="text-xs text-slate-400 line-through">{currency(product.price)}</p><div className="mt-3 flex items-center justify-between border-t border-slate-100 pt-2 text-xs text-slate-500"><span className="flex items-center gap-1"><Star size={13} className="fill-amber-400 text-amber-400" />{product.rating}</span><span>Đã bán {product.sold}</span></div><button type="button" className="mt-3 flex h-9 items-center justify-center gap-1 rounded-lg border border-primary-200 text-xs font-semibold text-primary-700 hover:bg-primary-50"><ShoppingCart size={15} /> Thêm vào giỏ</button></div></article>
+}
+
+export default ProductCard
