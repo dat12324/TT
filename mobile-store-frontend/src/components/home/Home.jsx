@@ -1,28 +1,27 @@
-import { useState } from 'react'
-import heroImg from '../../assets/images/hero.png'
-import reactLogo from '../../assets/images/react.svg'
-import viteLogo from '../../assets/images/vite.svg'
-import './Home.css'
+import { ArrowRight, BadgeCheck, Clock3, Flame, Headphones, RefreshCcw, ShieldCheck, Truck } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import Container from '@/components/common/Container'
+import ProductCard from '@/components/product/ProductCard'
+import { products } from '@/data/mockData/products'
+
+const heroImage = 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?auto=format&fit=crop&w=1000&q=85'
+const brands = ['Apple', 'Samsung', 'Xiaomi', 'OPPO', 'vivo', 'realme']
+
+function ProductShelf({ title, eyebrow, items, tone = 'white' }) {
+  return <section className={`${tone === 'gray' ? 'bg-slate-100' : tone === 'rose' ? 'bg-rose-50' : 'bg-white'} py-9 sm:py-12`}><Container><div className="mb-5 flex items-end justify-between"><div>{eyebrow && <p className="text-xs font-bold uppercase tracking-[.16em] text-primary-600">{eyebrow}</p>}<h2 className="mt-1 text-2xl font-bold text-slate-900">{title}</h2></div><Link to="/products" className="hidden items-center gap-1 text-sm font-semibold text-primary-600 sm:flex">Xem tất cả <ArrowRight size={16}/></Link></div><div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 lg:gap-5">{items.slice(0, 5).map((product) => <ProductCard key={product.id} product={product}/>)}</div></Container></section>
+}
 
 function Home() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <section id="center">
-      <div className="hero">
-        <img src={heroImg} className="base" width="170" height="179" alt="" />
-        <img src={reactLogo} className="framework" alt="React logo" />
-        <img src={viteLogo} className="vite" alt="Vite logo" />
-      </div>
-      <div>
-        <h1>Mobile Store</h1>
-        <p>Project structure is ready for development.</p>
-      </div>
-      <button type="button" className="counter" onClick={() => setCount((value) => value + 1)}>
-        Count is {count}
-      </button>
-    </section>
-  )
+  const sale = [...products].sort((a, b) => b.discountPercent - a.discountPercent)
+  return <>
+    <section className="bg-white py-4 sm:py-5"><Container><div className="grid gap-3 lg:grid-cols-[minmax(0,2.1fr)_minmax(260px,.9fr)]"><div className="relative min-h-[330px] overflow-hidden rounded-xl bg-[#f0ece8] sm:min-h-[380px]"><img src={heroImage} alt="iPhone 16 Pro Max" className="absolute inset-y-0 right-0 size-full object-cover sm:w-[57%]"/><div className="absolute inset-0 bg-gradient-to-r from-[#f0ece8] via-[#f0ece8]/95 to-transparent sm:w-[72%]"/><div className="relative z-10 flex min-h-[330px] max-w-xl flex-col justify-center px-6 sm:min-h-[380px] sm:px-10"><p className="mb-2 text-xs font-bold uppercase tracking-[.14em] text-primary-600">Mở bán chính thức</p><h1 className="text-3xl font-bold text-slate-950 sm:text-[42px]">iPhone 16 Pro Max</h1><p className="mt-3 max-w-sm text-slate-600">Chip A18 Pro. Camera chuyên nghiệp. Thiết kế titan bền bỉ.</p><p className="mt-5 text-2xl font-bold text-primary-600">31.990.000đ</p><div className="mt-6 flex gap-3"><Link to="/products/1" className="inline-flex items-center gap-2 rounded-xl bg-primary-600 px-5 py-3 font-bold text-white">Mua ngay <ArrowRight size={17}/></Link><Link to="/products?brand=apple" className="rounded-xl border border-slate-300 px-5 py-3 font-bold text-slate-700">Xem dòng iPhone</Link></div></div></div><div className="grid grid-cols-2 gap-3 lg:grid-cols-1"><Link to="/products" className="rounded-xl bg-primary-700 px-5 py-6 text-white lg:flex lg:flex-col lg:justify-center"><RefreshCcw className="mb-3 text-rose-200"/><p className="text-sm">Thu cũ đổi mới</p><h2 className="mt-1 text-xl font-bold">Trợ giá đến 3 triệu</h2></Link><Link to="/products" className="rounded-xl border border-slate-200 bg-slate-50 px-5 py-6 lg:flex lg:flex-col lg:justify-center"><BadgeCheck className="mb-3 text-primary-600"/><p className="text-sm text-slate-500">An tâm mua sắm</p><h2 className="mt-1 text-xl font-bold text-slate-900">Bảo hành chính hãng</h2></Link></div></div></Container></section>
+    <section className="bg-rose-50 py-8"><Container><div className="mb-5 flex items-center justify-between"><div className="flex items-center gap-3"><span className="grid size-10 place-items-center rounded-lg bg-primary-600 text-white"><Flame size={20}/></span><div><h2 className="text-xl font-bold">Flash Sale</h2><p className="text-xs text-slate-500">Số lượng có hạn</p></div></div><span className="flex items-center gap-2 rounded-lg bg-slate-900 px-3 py-2 text-sm font-bold text-white"><Clock3 size={16}/>12:30:45</span></div><div className="grid grid-cols-2 gap-3 md:grid-cols-4">{sale.slice(0,4).map((product) => <ProductCard key={product.id} product={product}/>)}</div></Container></section>
+    <ProductShelf title="Sản phẩm nổi bật" eyebrow="Được yêu thích" items={products}/><ProductShelf title="Sản phẩm mới" eyebrow="Vừa lên kệ" items={products.filter((item) => item.isNew)} tone="gray"/><ProductShelf title="Sản phẩm giảm giá" eyebrow="Deal tốt hôm nay" items={sale} tone="rose"/><ProductShelf title="iPhone nổi bật" eyebrow="Apple" items={products.filter((item) => item.brand === 'Apple')}/><ProductShelf title="Samsung nổi bật" eyebrow="Samsung" items={products.filter((item) => item.brand === 'Samsung')} tone="gray"/>
+    <section className="bg-white py-8"><Container><h2 className="text-2xl font-bold text-slate-900">Thương hiệu nổi bật</h2><p className="mt-1 text-sm text-slate-500">Lựa chọn sản phẩm chính hãng từ các thương hiệu bạn yêu thích.</p><div className="mt-5 grid grid-cols-3 gap-2.5 sm:grid-cols-6">{brands.map((brand) => <Link key={brand} to={`/products?brand=${brand.toLowerCase()}`} className="flex min-h-14 items-center justify-center rounded-xl border border-slate-200 text-sm font-bold text-slate-700 hover:bg-primary-50">{brand}</Link>)}</div></Container></section>
+    <section className="bg-slate-100 py-7"><Container><div className="flex flex-wrap items-center justify-between gap-5 rounded-2xl bg-gradient-to-r from-slate-900 to-primary-800 px-7 py-8 text-white"><div><p className="text-xs font-bold uppercase tracking-widest text-rose-200">Đặc quyền thành viên</p><h2 className="mt-1 text-2xl font-bold">Thu cũ đổi mới</h2><p className="mt-2 text-sm text-slate-300">Trợ giá đến 3 triệu cho sản phẩm được chọn.</p></div><Link to="/products" className="rounded-xl bg-white px-5 py-3 text-sm font-bold text-primary-700">Xem chi tiết</Link></div></Container></section>
+    <ProductShelf title="Sản phẩm bán chạy" eyebrow="Khách hàng tin chọn" items={[...products].sort((a, b) => b.sold - a.sold)} tone="gray"/>
+    <section className="bg-white py-9"><Container className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{[[Truck,'Giao hàng miễn phí','Toàn quốc cho đơn từ 2 triệu'],[ShieldCheck,'Chính hãng 100%','Nguồn gốc rõ ràng, đầy đủ VAT'],[RefreshCcw,'Đổi mới dễ dàng','Trong 30 ngày nếu lỗi nhà sản xuất'],[Headphones,'Hỗ trợ tận tâm','Tư vấn nhanh chóng mỗi ngày']].map(([Icon,title,text]) => <div key={title} className="flex items-center gap-3 rounded-xl border border-slate-100 bg-slate-50 p-4"><Icon className="text-primary-600"/><div><h3 className="text-sm font-bold">{title}</h3><p className="text-xs text-slate-500">{text}</p></div></div>)}</Container></section>
+  </>
 }
 
 export default Home
